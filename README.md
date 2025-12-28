@@ -128,3 +128,6 @@ Generating a self-signed certificate with OpenSSL
 Verifying and testing your self-signed certificate
 
 `openssl x509 -in qtglobal.test -text -noout`
+
+# Task – B:
+

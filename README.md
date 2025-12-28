@@ -103,3 +103,28 @@ server
 The output should be the text
 
 # Hello from C++ Minimal Web Server!
+
+
+## Step 2 HAProxy with TLS Termination
+
+### Generate a self-signed TLS certificate for: qtglobal.test
+
+Execute the command according to the encryption algorithm you wish for your private key using command prompt or terminal.
+
+`openssl genpkey -algorithm RSA -out private_key.pem -aes256`
+
+After generating the private key, you can verify its contents by using one of the following command
+
+`openssl rsa -check -in private_key.pem`
+
+Creating a certificate signing request (CSR) with OpenSSL
+
+`openssl req -new -key private_key.pem -out qtglobal.test`
+
+Generating a self-signed certificate with OpenSSL
+
+`openssl x509 -req -days 365 -in mydomain.csr -signkey private_key.pem -out qtglobal.test`
+
+Verifying and testing your self-signed certificate
+
+`openssl x509 -in qtglobal.test -text -noout`

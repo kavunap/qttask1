@@ -188,5 +188,11 @@ caddy.exe run --config Caddyfile --adapter caddyfile
 - Any browser requests to `https://qtglobal.test/` now go through Caddy to your C++ server
 
 
+### Commands to run the app
+
+- `g++ create_logfile.cpp -o server -lws2_32` to compile the code
+- `server` to start the server
+- `caddy.exe run --config Caddyfile --adapter caddyfile` to start proxy server
+- `https://qtglobal.test/` in the browser for results
 
 

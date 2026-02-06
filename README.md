@@ -8,7 +8,7 @@ Below is a simple, minimal C++ web server, using Winsock. It listens on a port a
 2. Browser: Google chrome
 3. Terminal: Windows terminal
 4. OS: Windows 10
-5. Compiler: MinGW / g++
+5. Compiler: MinGW / g++ updated to the [MSYS2 MinGW-w64](https://www.msys2.org/)
 
 ## Step 1
 
@@ -130,4 +130,63 @@ Verifying and testing your self-signed certificate
 `openssl x509 -in qtglobal.test -text -noout`
 
 # Task – B:
+
+## Running the app to https://qtglobal.test/ instead of localhost
+
+1. Edit the Windows hosts file and Adde the line:
+
+```
+127.0.0.1    qtglobal.test
+```
+2. Set up Caddy as a reverse proxy
+
+- Install [Caddy v2.10.2](https://caddyserver.com/download) in C:\caddy
+- Created a Caddyfile(with no extension) with content:
+
+```
+qtglobal.test {
+    reverse_proxy localhost:8080
+    tls internal
+}
+```
+- What this does:
+
+    -> Listens on :`443` (HTTPS)
+
+    -> Forwards all traffic to your C++ server on port 8080
+
+    -> Generates a local TLS certificate ( `tls internal`) for HTTPS
+
+- Run caddy `fmt --overwrite Caddyfile` to fix formatting.
+
+3. Fix the local TLS certificate
+
+- Because `qtglobal.test` is not a public domain, Let’s Encrypt cannot issue a certificate.
+
+- We use Caddy’s internal CA with `tls internal`
+
+- Trust the certificate locally:
+
+```
+caddy.exe trust
+```
+
+- Restart browser to accept Caddy’s local certificate
+
+Now browsers trust `https://qtglobal.test/`
+
+4. Run Caddy manually
+
+- In Command Prompt:
+
+```
+cd C:\caddy
+caddy.exe run --config Caddyfile --adapter caddyfile
+```
+
+- Caddy starts, serves HTTPS on `qtglobal.test`, and reverse proxies to `localhost:8080`
+- Any browser requests to `https://qtglobal.test/` now go through Caddy to your C++ server
+
+
+
 
